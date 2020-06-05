@@ -34,7 +34,8 @@ create table if not exists ejercicio (
  
  create table if not exists coach (
 	id_coach int not null auto_increment,
-    hora_inicio time not null,
+    hora_inicio datetime not null,
+	hora_termina datetime not null,
     nombre varchar(50) not null,
     apellido_p varchar(50) not null,
     apellido_m varchar(50),
@@ -59,7 +60,8 @@ create table if not exists ejercicio (
  ) engine = InnoDB;
  
  create table if not exists clase (
-	hora_inicio time not null,
+	hora_inicio datetime not null,
+	hora_termina datetime not null,
     id_wod int not null,
     id_coach int not null,
     
