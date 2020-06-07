@@ -25,7 +25,7 @@ create table if not exists material (
 )engine = InnoDB;
 
 create table if not exists ejercicio (
-	nombre varchar(30) not null,
+	nombre varchar(70) not null,
     descripcion varchar(200) not null,
     
     primary key(nombre)
@@ -46,59 +46,59 @@ create table if not exists ejercicio (
  )engine =  InnoDB;
  
  create table if not exists wod (
-	id_wod int not null auto_increment,
-    nombre_ejercicio varchar(30) not null,
+    fecha date not null,
     tiempo int not null,
-    repeticiones int not null,
 		
-	primary key(id_wod),
-    constraint fk_ejercicio_wod foreign key(nombre_ejercicio)
-		references ejercicio(nombre)
-        on delete cascade
-        on update cascade
+	primary key(fecha)
         
  ) engine = InnoDB;
  
  create table if not exists clase (
-	hora_inicio datetime not null,
-	hora_termina datetime not null,
-    id_wod int not null,
+	hora_inicio time not null,
+	hora_termina time not null,
+    fecha_wod date not null,
     id_coach int not null,
     
-    primary key(hora_inicio)
+    primary key(hora_inicio),
+    
+    constraint fk_wod foreign key(fecha_wod)
+		references wod(fecha)
+        on delete cascade
+        on update cascade
     
  ) engine = InnoDB;
  
- create table if not exists box (
-	id_box int not null auto_increment,
-    id_cliente int not null,
-    clase time not null,
-    material varchar(70) not null,
-    coach int not null,
+ create table if not exists clientes_clase (
+	id_cliente int not null,
+    hora_clase time not null,
     
-    primary key(id_box),
+    primary key(id_cliente,hora_clase),
     
     constraint fk_cliente foreign key(id_cliente)
 		references cliente(id_cliente)
         on delete cascade
         on update cascade,
         
-	constraint fk_clase foreign key(clase)
+	constraint fk_clase foreign key(hora_clase)
 		references clase(hora_inicio)
         on delete cascade
-        on update cascade,
-        
-        
-	constraint fk_material foreign key(material)
-		references material(nombre)
+        on update cascade
+ )engine = InnoDB;
+ 
+ create table if not exists ejercicios_wod (
+	nombre_ejercicio varchar(70) not null,
+    fecha_wod date not null,
+    repeticiones int not null,
+    
+    primary key (nombre_ejercicio,fecha_wod),
+    
+    constraint fk_ejercicio foreign key(nombre_ejercicio)
+		references ejercicio(nombre)
         on delete cascade
         on update cascade,
         
-    constraint fk_coach foreign key(coach)
-		references coach(id_coach)
+	constraint fk_ejercicio_wod foreign key(fecha_wod)
+		references wod(fecha)
         on delete cascade
         on update cascade
-	
-    
-)engine = InnoDB;
-    
+ )engine = InnoDB;
