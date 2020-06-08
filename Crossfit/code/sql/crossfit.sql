@@ -2,7 +2,6 @@ create database if not exists crossfit_db;
 
 use crossfit_db;
 
-
 create table if not exists material (
 	nombre varchar(70) not null,
     cantidad int not null,
@@ -27,8 +26,6 @@ create table if not exists ejercicio (
  
  create table if not exists coach (
 	id_coach int not null auto_increment,
-    hora_inicio datetime not null,
-	hora_termina datetime not null,
     nombre varchar(50) not null,
     apellido_p varchar(50) not null,
     apellido_m varchar(50),

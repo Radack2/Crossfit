@@ -2,9 +2,9 @@ from mysql  import connector
 
 class Model:
     """"
-    ***********************************************************
-    A data model with Mysql for buying a ticket for a crossfit. 
-    ***********************************************************
+    ************************************
+    A data model for a crossfit. 
+    ************************************
     """
 
     def __init__(self, config_db_file='config.txt'):
@@ -35,10 +35,10 @@ class Model:
     *       Cliente methods      *
     ******************************
     """
-    def create_cliente(self, nombre, apellidoP, apellidoM, edad, tel, email, fechaPago):
+    def create_cliente(self, nombre, apellidoP, apellidoM, edad, tel, email, fechaPago, hora_clase):
         try:
-            sql = 'INSERT INTO cliente (`cl_nombre`, `cl_apellido_p`, `cl_apellido_m`,`cl_edad`,`cl_telefono`,`cl_correo`,`cl_fecha_pago`) VALUES (%s, %s, %s, %s, %s, %s, %s)'
-            vals = (nombre, apellidoP, apellidoM, edad, tel, email, fechaPago)
+            sql = 'INSERT INTO cliente (`nombre`, `apellido_p`, `apellido_m`,`edad`,`telefono`,`correo`,`fecha_pago`,`hora_clase`) VALUES (%s, %s, %s, %s, %s, %s, %s,%s)'
+            vals = (nombre, apellidoP, apellidoM, edad, tel, email, fechaPago, hora_clase)
             self.cursor.execute(sql, vals)
             self.cnx.commit()
             return True
@@ -67,18 +67,8 @@ class Model:
 
     def read_cliente_nombre(self, nombre):
         try:
-            sql =  'SELECT * FROM cliente WHERE cl_nombre = %s'
+            sql =  'SELECT * FROM cliente WHERE nombre = %s'
             vals = (nombre,)
-            self.cursor.execute(sql, vals)
-            record = self.cursor.fetchall()
-            return record
-        except connector.Error as err:
-            return err
-
-    def read_cliente_tel(self, tel):
-        try:
-            sql =  'SELECT * FROM cliente WHERE cl_telefono = %s'
-            vals = (tel,)
             self.cursor.execute(sql, vals)
             record = self.cursor.fetchall()
             return record
@@ -114,10 +104,10 @@ class Model:
     *        Coach methods       *
     ******************************
     """
-    def create_coach(self, horaInicio, horaFin, nombre, apellidoP, apellidoM, tel, email):
+    def create_coach(self, nombre, apellidoP, apellidoM, tel, email):
         try:
-            sql = 'INSERT INTO coach (`co_hora_inicio`, `co_hora_termina`, `co_nombre`,`co_apellido_p`,`co_apellido_m`,`co_telefono`,`co_correo`) VALUES (%s, %s, %s, %s, %s, %s, %s)'
-            vals = (horaInicio, horaFin, nombre, apellidoP, apellidoM, tel, email)
+            sql = 'INSERT INTO coach (`nombre`,`apellido_p`,`apellido_m`,`telefono`,`correo`) VALUES (%s, %s, %s, %s, %s)'
+            vals = (nombre, apellidoP, apellidoM, tel, email)
             self.cursor.execute(sql, vals)
             self.cnx.commit()
             return True
@@ -154,16 +144,6 @@ class Model:
         except connector.Error as err:
             return err
 
-    def read_coach_dia(self, dia):
-        try:
-            sql =  'SELECT * FROM coach WHERE DATE(co_hora_inicio) = %s'
-            vals = (dia,)
-            self.cursor.execute(sql, vals)
-            record = self.cursor.fetchall()
-            return record
-        except connector.Error as err:
-            return err
-            
     def update_coach(self, fields, vals):
         try:
             sql = 'UPDATE coach SET '+','.join(fields)+' WHERE id_coach = %s'
@@ -194,7 +174,7 @@ class Model:
     """
     def create_material(self, nombre, cantidad, descripcion):
         try:
-            sql = 'INSERT INTO material (`m_nombre`, `m_cantidad`, `m_descripcion`) VALUES (%s, %s, %s)'
+            sql = 'INSERT INTO material (`nombre`, `cantidad`, `descripcion`) VALUES (%s, %s, %s)'
             vals = ( nombre, cantidad, descripcion )
             self.cursor.execute(sql, vals)
             self.cnx.commit()
@@ -205,7 +185,7 @@ class Model:
     
     def read_a_material(self, material):
         try:
-            sql = 'SELECT * FROM material WHERE m_nombre = %s'
+            sql = 'SELECT * FROM material WHERE nombre = %s'
             vals = (material,)
             self.cursor.execute(sql, vals)
             records = self.cursor.fetchone()
@@ -224,7 +204,7 @@ class Model:
 
     def update_material(self, fields, vals):
         try:
-            sql = 'UPDATE material SET '+','.join(fields)+' WHERE m_nombre = %s'
+            sql = 'UPDATE material SET '+','.join(fields)+' WHERE nombre = %s'
             self.cursor.execute(sql, vals)
             self.cnx.commit()
             return True
@@ -234,7 +214,7 @@ class Model:
 
     def delete_material(self, material):
         try:
-            sql =  'DELETE FROM material WHERE m_nombre = %s'
+            sql =  'DELETE FROM material WHERE nombre = %s'
             vals = (material,)
             self.cursor.execute(sql, vals)
             self.cnx.commit()
@@ -251,10 +231,10 @@ class Model:
     *       Ejercicio methods     *
     ******************************
     """
-    def create_ejercicio(self, nombre, material, descripcion):
+    def create_ejercicio(self, nombre, descripcion,material):
         try:
-            sql = 'INSERT INTO ejercicio (`e_nombre`, `m_nombre`, `e_descripcion`) VALUES (%s, %s, %s)'
-            vals = ( nombre, material, descripcion )
+            sql = 'INSERT INTO ejercicio (`nombre`, `descripcion`, `material`) VALUES (%s, %s, %s)'
+            vals = ( nombre, descripcion, material )
             self.cursor.execute(sql, vals)
             self.cnx.commit()
             return True
@@ -264,7 +244,7 @@ class Model:
     
     def read_a_ejercicio(self, ejercicio):
         try:
-            sql = 'SELECT * FROM ejercicio WHERE e_nombre = %s'
+            sql = 'SELECT * FROM ejercicio WHERE nombre = %s'
             vals = (ejercicio,)
             self.cursor.execute(sql, vals)
             records = self.cursor.fetchone()
@@ -283,7 +263,7 @@ class Model:
 
     def update_ejercicio(self, fields, vals):
         try:
-            sql = 'UPDATE ejercicio SET '+','.join(fields)+' WHERE e_nombre = %s'
+            sql = 'UPDATE ejercicio SET '+','.join(fields)+' WHERE nombre = %s'
             self.cursor.execute(sql, vals)
             self.cnx.commit()
             return True
@@ -293,7 +273,7 @@ class Model:
 
     def delete_ejercicio(self, ejercicio):
         try:
-            sql =  'DELETE FROM ejercicio WHERE e_nombre = %s'
+            sql =  'DELETE FROM ejercicio WHERE nombre = %s'
             vals = (ejercicio,)
             self.cursor.execute(sql, vals)
             self.cnx.commit()
@@ -309,10 +289,10 @@ class Model:
     *       WOD methods     *
     ******************************
     """
-    def create_wod(self, ejercicio, tiempo, repeticiones):
+    def create_wod(self, fecha, tiempo, tipo):
         try:
-            sql = 'INSERT INTO wod (`e_nombre`, `w_tiempo`, `w_repeticiones`) VALUES (%s, %s, %s)'
-            vals = ( ejercicio, tiempo, repeticiones )
+            sql = 'INSERT INTO wod (`fecha`, `tiempo`, `tipo`) VALUES (%s, %s, %s)'
+            vals = ( fecha, tiempo, tipo )
             self.cursor.execute(sql, vals)
             self.cnx.commit()
             return True
@@ -320,10 +300,10 @@ class Model:
             self.cnx.rollback()
             return err
     
-    def read_a_wod(self, id_wod):
+    def read_a_wod(self, fecha):
         try:
-            sql = 'SELECT * FROM wod WHERE id_wod = %s'
-            vals = (id_wod,)
+            sql = 'SELECT * FROM wod WHERE fecha = %s'
+            vals = (fecha,)
             self.cursor.execute(sql, vals)
             records = self.cursor.fetchone()
             return records
@@ -341,7 +321,7 @@ class Model:
 
     def update_wod(self, fields, vals):
         try:
-            sql = 'UPDATE wod SET '+','.join(fields)+' WHERE id_wod = %s'
+            sql = 'UPDATE wod SET '+','.join(fields)+' WHERE fecha = %s'
             self.cursor.execute(sql, vals)
             self.cnx.commit()
             return True
@@ -349,10 +329,10 @@ class Model:
             self.cnx.rollback()
             return err
 
-    def delete_wod(self, id_wod):
+    def delete_wod(self, fecha):
         try:
-            sql =  'DELETE FROM wod WHERE id_wod = %s'
-            vals = (id_wod,)
+            sql =  'DELETE FROM wod WHERE fecha = %s'
+            vals = (fecha,)
             self.cursor.execute(sql, vals)
             self.cnx.commit()
             count = self.cursor.rowcount
@@ -367,10 +347,10 @@ class Model:
     *       Clase methods     *
     ******************************
     """
-    def create_clase(self, horaInicio, horaFin, wod, coach, cliente):
+    def create_clase(self, horaInicio, horaFin, wod, coach):
         try:
-            sql = 'INSERT INTO clase (`hora_inicio`, `hora_termina`, `id_wod`, `id_coach`, `id_cliente`) VALUES (%s, %s, %s, %s, %s)'
-            vals = ( horaInicio, horaFin, wod, coach, cliente )
+            sql = 'INSERT INTO clase (`hora_inicio`, `hora_termina`, `fecha_wod`, `id_coach`) VALUES (%s, %s, %s, %s)'
+            vals = ( horaInicio, horaFin, wod, coach )
             self.cursor.execute(sql, vals)
             self.cnx.commit()
             return True
@@ -378,10 +358,10 @@ class Model:
             self.cnx.rollback()
             return err
     
-    def read_a_clase(self, id_clase):
+    def read_a_clase(self, hora_clase):
         try:
-            sql = 'SELECT * FROM clase WHERE id_clase = %s'
-            vals = (id_clase,)
+            sql = 'SELECT * FROM clase WHERE hora_inicio = %s'
+            vals = (hora_clase,)
             self.cursor.execute(sql, vals)
             records = self.cursor.fetchone()
             return records
@@ -397,10 +377,10 @@ class Model:
         except connector.Error as err:
             return err
 
-    def read_clase_coach(self, id_clase):
+    def read_clase_coach(self, hora_clase):
         try:
-            sql = 'SELECT clase.*, coach.co_nombre, coach.co_apellido_p, coach.co_hora_inicio, coach.co_hora_termina FROM clase JOIN coach ON clase.id_coach = coach.id_coach and id_clase = %s'
-            vals = (id_clase,)
+            sql = 'SELECT clase.*, coach.nombre, coach.apellido_p, coach.hora_inicio FROM clase JOIN coach ON clase.id_coach = coach.id_coach and hora_inicio = %s'
+            vals = (hora_clase,)
             self.cursor.execute(sql, vals)
             records = self.cursor.fetchone()
             return records
@@ -429,7 +409,7 @@ class Model:
 
     def update_clase(self, fields, vals):
         try:
-            sql = 'UPDATE clase SET '+','.join(fields)+' WHERE id_clase = %s'
+            sql = 'UPDATE clase SET '+','.join(fields)+' WHERE hora_inicio = %s'
             self.cursor.execute(sql, vals)
             self.cnx.commit()
             return True
@@ -439,7 +419,7 @@ class Model:
 
     def delete_clase(self, id_clase):
         try:
-            sql =  'DELETE FROM clase WHERE id_clase = %s'
+            sql =  'DELETE FROM clase WHERE hora_inicio = %s'
             vals = (id_clase,)
             self.cursor.execute(sql, vals)
             self.cnx.commit()
