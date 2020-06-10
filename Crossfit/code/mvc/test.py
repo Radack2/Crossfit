@@ -1,14 +1,14 @@
-from model.model import Model
+# from model.model import Model
 
-m = Model()
+# m = Model()
 
-print('Success')
+# print('Success')
 
-m.close_db()
+# m.close_db()
 
 
-# from controller.controller import Controller
+from controller.controller import Controller
 
-# c = Controller()
+c = Controller()
 
-# c.start()
+c.start()

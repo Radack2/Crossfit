@@ -25,8 +25,7 @@ class View:
         print('4. Ejercicio')
         print('5. WOD')
         print('6. Clase')
-        print('7. Usuario')
-        print('8. Salir')
+        print('7. Salir')
 
     def option(self, last):
         print('Selecciona una opcion (1-'+last+'): ', end = '')
@@ -35,12 +34,12 @@ class View:
         print('¡Opcion no valida!\nIntenta de Nuevo')
     
     def ask(self, output):
-        print(output, end='')
+        print(output,end = '')
 
     def msg(self, output):
         print(output)
 
-    def  ok(self, id, op):
+    def ok(self, id, op):
         print('+'*(len(str(id)) + len(op) +24))
         print('+ ¡'+str(id)+' '+op+' correctamente! +')
         print('+'*(len(str(id)) + len(op)+24))
@@ -61,19 +60,19 @@ class View:
         print('* -- Submenu Cliente -- *')
         print('*************************')
         print('1. Agregar Cliente')
-        print('2. Mostrar Cliente')
+        print('2. Mostrar Cliente ID')
         print('3. Mostrar todos los Clientes')
         print('4. Mostrar Clientes por nombre')
-        print('5. Mostrar Clientes por número telefónico')
-        print('6. Actualizar Cliente')
-        print('7. Borrar Cliente')
-        print('8. Regresar')
+        print('5. Actualizar Cliente')
+        print('6. Borrar Cliente')
+        print('7. Regresar')
 
     def show_a_cliente(self, record):
         print('ID: ', record[0])
         print('Nombre: ', record[1]+' '+record[2]+' '+record[3]+' | ',record[4],' años')
         print('Datos | Email: ', record[5]+' Telefono: '+record[6])
         print('Fecha de pago: ', record[7])
+        print('Clase: ', record[8])
 
     def show_cliente_header(self, header):
         print(header.center(78, '*'))
@@ -99,16 +98,14 @@ class View:
         print('2. Mostrar Coach')
         print('3. Mostrar todos los Coachs')
         print('4. Mostrar Coachs por nombre')
-        print('5. Mostrar Coachs por día de trabajo')
-        print('6. Actualizar Coachs')
-        print('7. Borrar Coachs')
-        print('8. Regresar')
+        print('5. Actualizar Coachs')
+        print('6. Borrar Coachs')
+        print('7. Regresar')
 
     def show_a_coach(self, record):
         print('ID: ', record[0])
-        print('Nombre: ', record[3]+' '+record[4]+' '+record[5])
-        print('Hora de inicio: ', record[1], ' | Hora Finaliza ', record[2])
-        print('Datos | Email: ', record[6]+' Telefono: '+record[7])
+        print('Nombre: ', record[1]+' '+record[2]+' '+record[3])
+        print('Datos | Email: ', record[5]+' Telefono: '+record[4])
 
     def show_coach_header(self, header):
         print(header.center(78, '*'))
@@ -171,8 +168,11 @@ class View:
 
     def show_a_ejercicio(self, record):
         print('Nombre: ', record[0])
-        print('Material: ', record[1])
-        print('Descripcion: ', record[2])
+        print('Material: ', record[2])
+        print('Descripcion: ', record[1])
+
+    def show_ejercicio_wod(self, record):
+       print(str(record[2])+ ' '+ record[0])
 
     def show_ejercicio_header(self, header):
         print(header.center(48, '*'))
@@ -197,15 +197,17 @@ class View:
         print('1. Agregar WOD')
         print('2. Leer WOD')
         print('3. Leer todos los WOD')
-        print('4. Actualizar WOD')
-        print('5. Borrar WOD')
-        print('6. Regresar')
+        print('4. Agregar ejercicios a WOD')
+        print('5. Actualizar WOD')
+        print('6. Actualizar repeticiones ejercicio WOD')
+        print('7. Borrar WOD')
+        print('8. Borrar ejercios WOD')
+        print('9. Regresar')
 
     def show_a_wod(self, record):
-        print('ID WOD: ', record[0])
-        print('Ejercicio: ', record[1])
-        print('Tiempo: ', record[2])
-        print('Repeticiones: ', record[3])
+        print('Fecha WOD: ', record[0])
+        print('Tiempo: ', record[1])
+        print('Tipo: ', record[2])
 
     def show_wod_header(self, header):
         print(header.center(48, '*'))
@@ -230,21 +232,22 @@ class View:
         print('***************************')
         print('1. Agregar Clase')
         print('2. Leer Clase')
-        print('3. Leer todos los Clase')
+        print('3. Leer todas las Clase')
         print('4. Leer Clase por Coach')
-        print('5. Leer Clase por día')
-        print('6. Leer Clase por Horario')
-        print('7. Actualizar Clase')
-        print('8. Borrar Clase')
-        print('9. Regresar')
+        print('5. Actualizar Clase')
+        print('6. Borrar Clase')
+        print('7. Regresar')
 
     def show_a_clase(self, record):
-        print('ID Clase: ', record[0])
-        print('Horario: ', record[1]+' - '+record[2])
-        print('ID WOD: ', record[3])
-        print('ID Coach: ', record[4])
-        print('ID Cliente: ', record[5])
+        print('Horario: ', str(record[0])+' - '+str(record[1]))
+        print('WOD: ', record[2])
+        print('Coach: ', record[4])
 
+    def show_all_clases(self,record):
+        print('Horario: ', str(record[0])+' - '+str(record[1]))
+        print('ID WOD: ', record[3])
+        print('Nombre: ', record[5]+' '+record[6]+' '+record[7])
+       
     def show_clase_header(self, header):
         print(header.center(48, '*'))
         print('-'*48)

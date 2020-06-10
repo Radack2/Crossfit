@@ -1,4 +1,4 @@
-user:jf
+user:rdk
 password:SqL1380
 host:localhost
 database:crossfit_db

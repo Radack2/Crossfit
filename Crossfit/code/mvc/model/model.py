@@ -231,7 +231,7 @@ class Model:
     *       Ejercicio methods     *
     ******************************
     """
-    def create_ejercicio(self, nombre, descripcion,material):
+    def create_ejercicio(self, nombre,material, descripcion):
         try:
             sql = 'INSERT INTO ejercicio (`nombre`, `descripcion`, `material`) VALUES (%s, %s, %s)'
             vals = ( nombre, descripcion, material )
@@ -264,6 +264,7 @@ class Model:
     def update_ejercicio(self, fields, vals):
         try:
             sql = 'UPDATE ejercicio SET '+','.join(fields)+' WHERE nombre = %s'
+            print(sql,vals)
             self.cursor.execute(sql, vals)
             self.cnx.commit()
             return True
@@ -360,7 +361,7 @@ class Model:
     
     def read_a_clase(self, hora_clase):
         try:
-            sql = 'SELECT * FROM clase WHERE hora_inicio = %s'
+            sql = 'SELECT clase.*, coach.nombre FROM clase join coach on clase.id_coach = coach.id_coach and hora_inicio = %s'
             vals = (hora_clase,)
             self.cursor.execute(sql, vals)
             records = self.cursor.fetchone()
@@ -370,39 +371,19 @@ class Model:
 
     def read_all_clases(self):   
         try:
-            sql =  'SELECT * FROM clase'
+            sql =  'SELECT clase.*, coach.nombre FROM clase join coach on clase.id_coach = coach.id_coach'
             self.cursor.execute(sql)
             records = self.cursor.fetchall()
             return records
         except connector.Error as err:
             return err
 
-    def read_clase_coach(self, hora_clase):
+    def read_clase_coach(self,nombre,apellido_p):
         try:
-            sql = 'SELECT clase.*, coach.nombre, coach.apellido_p, coach.hora_inicio FROM clase JOIN coach ON clase.id_coach = coach.id_coach and hora_inicio = %s'
-            vals = (hora_clase,)
+            sql = 'SELECT clase.*, coach.nombre, coach.apellido_p FROM clase JOIN coach ON clase.id_coach = coach.id_coach and coach.nombre = %s and coach.apellido_p = %s'
+            vals = (nombre,apellido_p)
             self.cursor.execute(sql, vals)
-            records = self.cursor.fetchone()
-            return records
-        except connector.Error as err:
-            return err
-
-    def read_clase_dia(self, dia):   
-        try:
-            sql = 'SELECT * FROM clase WHERE TIME(hora_inicio) = %s'
-            vals = (dia,)
-            self.cursor.execute(sql, vals)
-            records = self.cursor.fetchone()
-            return records
-        except connector.Error as err:
-            return err
-
-    def read_clase_horario(self, horrio):   
-        try:
-            sql = 'SELECT * FROM clase WHERE DATE(hora_inicio) = %s'
-            vals = (horrio,)
-            self.cursor.execute(sql, vals)
-            records = self.cursor.fetchone()
+            records = self.cursor.fetchall()
             return records
         except connector.Error as err:
             return err
@@ -488,9 +469,52 @@ class Model:
             return err
 
 
+    """
+    ******************************
+    *   Ejercicios-Wod method    *
+    ******************************
+    """
 
+    def agregar_ejercicio_wod(self, nombre_ejercicio, fecha_wod,repeticiones):
+        try:
+            sql = 'INSERT INTO ejercicios_wod (`nombre_ejercicio`, `fecha_wod`,`repeticiones`) VALUES (%s, %s, %s)'
+            vals = ( nombre_ejercicio, fecha_wod, repeticiones)
+            self.cursor.execute(sql, vals)
+            self.cnx.commit()
+            return True
+        except connector.Error as err:
+            self.cnx.rollback()
+            return err
 
-
-
-
+    def read_all_ejercicios_wod(self, fecha_wod):
+        try:
+            sql = 'SELECT * FROM ejercicios_wod WHERE fecha_wod = %s'
+            vals = (fecha_wod,)
+            self.cursor.execute(sql, vals)
+            records = self.cursor.fetchall()
+            return records
+        except connector.Error as err:
+            return err
     
+    def update_ejercicio_wod(self, fields, vals):
+        try:
+            sql = 'UPDATE ejercicios_wod SET '+','.join(fields)+' WHERE fecha_wod = %s AND nombre_ejercicio = %s'
+            print(sql,vals)
+            self.cursor.execute(sql, vals)
+            self.cnx.commit()
+            return True
+        except connector.Error as err:
+            self.cnx.rollback()
+            return err
+
+    def delete_ejercicio_wod(self, fecha_wod, nombre_ejercicio):
+        try:
+            sql =  'DELETE FROM ejercicios_wod WHERE fecha_wod = %s  AND nombre_ejercicio = %s'
+            vals = (fecha_wod,nombre_ejercicio)
+            self.cursor.execute(sql, vals)
+            self.cnx.commit()
+            count = self.cursor.rowcount
+            return count
+        except connector.Error as err:
+            self.cnx.rollback()
+            return err
