@@ -617,7 +617,7 @@ class Controller:
             print('Cuantos ejercicios desea agregar al wod?')
             n = input()
             for i in range(int(n)):
-                nombre,reps = self.ask_ejercicio()
+                nombre,reps = self.ask_ejercicio_wod()
                 out1 = self.model.agregar_ejercicio_wod(nombre,fecha,reps)
                 if out1 == True:
                     self.view.ok(nombre, ' se agregó')
@@ -673,7 +673,7 @@ class Controller:
     def update_wod(self):
         self.view.ask('Fecha WOD a modificar: ')
         id_wod = input()
-        wod = self.model.update_wod(id_wod)
+        wod = self.model.read_a_wod(id_wod)
         if type(wod) == tuple:
             self.view.show_wod_header(' Datos del wod: '+id_wod+' ')
             self.view.show_a_wod(wod)
