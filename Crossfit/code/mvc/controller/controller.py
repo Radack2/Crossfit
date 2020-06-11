@@ -908,7 +908,7 @@ class Controller:
             self.view.error('NO SE PUDO ACTUALIZAR LA CLASE. REVISA')
         return
 
-    def delete_wod(self):
+    def delete_clase(self):
         self.view.ask('Hora de la clase: ')
         hora = input()
         count = self.model.delete_clase(hora)
