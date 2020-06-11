@@ -160,7 +160,7 @@ class Controller:
     def update_cliente(self):
         self.view.ask('ID de cliente a modificar: ')
         id_client = input()
-        client = self.model.update_cliente(id_client)
+        client = self.model.read_cliente(id_client)
         if type(client) == tuple:
             self.view.show_cliente_header(' Datos del Cliente: '+id_client+' ')
             self.view.show_a_cliente(client)
@@ -294,7 +294,7 @@ class Controller:
     def update_coach(self):
         self.view.ask('ID de coach a modificar: ')
         id_coach = input()
-        coach = self.model.update_coach(id_coach)
+        coach = self.model.read_coach(id_coach)
         if type(coach) == tuple:
             self.view.show_coach_header(' Datos del coach: '+id_coach+' ')
             self.view.show_a_coach(coach)

@@ -136,7 +136,7 @@ class Model:
 
     def read_coach_nombre(self, nombre):
         try:
-            sql =  'SELECT * FROM coach WHERE cl_nombre = %s'
+            sql =  'SELECT * FROM coach WHERE nombre = %s'
             vals = (nombre,)
             self.cursor.execute(sql, vals)
             record = self.cursor.fetchall()
