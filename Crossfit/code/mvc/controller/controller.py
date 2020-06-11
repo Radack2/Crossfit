@@ -611,7 +611,7 @@ class Controller:
         return [nombre,reps]
 
     def create_wod(self):
-        fecha, tiempo, tipo = self.ask_ejercicio_wod()
+        fecha, tiempo, tipo = self.ask_wod()
         out = self.model.create_wod(fecha, tiempo, tipo)
         if out == True:
             print('Cuantos ejercicios desea agregar al wod?')
