@@ -395,6 +395,7 @@ class Model:
             self.cnx.commit()
             return True
         except connector.Error as err:
+            print(err)
             self.cnx.rollback()
             return err
 

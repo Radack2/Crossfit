@@ -898,10 +898,10 @@ class Controller:
             return
         self.view.msg('Ingresa los valores a modificar (vacio para dejarlo igual): ')
         whole_vals = self.ask_clase()
-        fields, vals = self.update_lists(['hora_inicio', 'hora_fin', 'fecha_wod','id_coach'], whole_vals)
+        fields, vals = self.update_lists(['hora_inicio', 'hora_termina', 'fecha_wod','id_coach'], whole_vals)
         vals.append(hora)
         vals = tuple(vals)
-        out = self.model.update_wod(fields, vals)
+        out = self.model.update_clase(fields, vals)
         if out == True:
             self.view.ok(hora, 'Clase actualizado')
         else:
