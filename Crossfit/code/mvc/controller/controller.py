@@ -603,7 +603,7 @@ class Controller:
         tipo = input()
         return [fecha, tiempo, tipo]
     
-    def ask_ejercicio(self):
+    def ask_ejercicio_wod(self):
         self.view.ask('Nombre Ejercicio: ')
         nombre = input()
         self.view.ask('Repeticiones: ')
@@ -611,7 +611,7 @@ class Controller:
         return [nombre,reps]
 
     def create_wod(self):
-        fecha, tiempo, tipo = self.ask_wod()
+        fecha, tiempo, tipo = self.ask_ejercicio_wod()
         out = self.model.create_wod(fecha, tiempo, tipo)
         if out == True:
             print('Cuantos ejercicios desea agregar al wod?')
@@ -713,7 +713,7 @@ class Controller:
     def agregar_ejercicios_wod(self):
         self.view.ask('Fecha WOD a agregar ejercicios: ')
         fecha = input()
-        nombre,reps = self.ask_ejercicio()
+        nombre,reps = self.ask_ejercicio_wod()
         out = self.model.agregar_ejercicio_wod(nombre,fecha,reps)
         if out == True:
             self.view.ok(nombre+' agregado al WOD'+fecha, ' se agregó')
