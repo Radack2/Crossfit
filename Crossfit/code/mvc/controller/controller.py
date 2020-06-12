@@ -121,7 +121,7 @@ class Controller:
         client = self.model.read_cliente(id_cliente)
         if type(client) == tuple:
             self.view.show_cliente_header(' Datos del cliente '+id_cliente+' ')
-            self.view.show_a_cliente(id_cliente)
+            self.view.show_a_cliente(client)
             self.view.show_cliente_midder()
             self.view.show_cliente_footer()
         else:
@@ -174,10 +174,10 @@ class Controller:
             return
         self.view.msg('Ingresa los valores a modificar (vacio para dejarlo igual): ')
         whole_vals = self.ask_cliente()
-        fields, vals = self.update_lists(['`nombre`, `apellido_p`, `apellido_m`,`edad`,`telefono`,`correo`,`fecha_pago`,`hora_clase`'], whole_vals)
+        fields, vals = self.update_lists(['nombre', 'apellido_p', 'apellido_m','edad','telefono','correo','fecha_pago','hora_clase'], whole_vals)
         vals.append(id_client)
         vals = tuple(vals)
-        out = self.model.update_client(fields, vals)
+        out = self.model.update_cliente(fields, vals)
         if out == True:
             self.view.ok(id_client, 'actualizado')
         else:
